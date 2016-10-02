@@ -50,16 +50,62 @@ BMI description and use
 # Example
 
 For a person with 73 kg weight and 1.72 meters tall, his BMI is:
-
-**$$BMI= \frac{mass_{kg}}{height_m^{2}}= \frac{73_{kg}}{1.72m^{2}}=24.6755003$$**
-
-
+`r BMI<- (73/(1.72^2))`
+**$$BMI= \frac{mass_{kg}}{height_m^{2}}= \frac{73_{kg}}{1.72m^{2}}=`r BMI`$$**
 
 
-And It correspond with a normal weight class.
+```{r echo=FALSE}
+    msg<- "";
+    imc<-BMI;
+    if(imc<18.5) msg<-paste0(msg, "underweight");
+    if(imc>=18.5&&imc<25) msg<-paste0(msg, "normal weight");
+    if(imc>=25&&imc<30) msg<-paste0(msg, "overweight");
+    if(imc>=30&&imc<35) msg<-paste0(msg, "obese type I");
+    if(imc>=35&&imc<40) msg<-paste0(msg, "obese type II");
+    if(imc>=40) msg<-paste0(msg, "obese type III");
+```
+
+And It correspond with a `r msg` class.
 
 
-<img src="index-figure/unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" style="display: block; margin: auto;" />
+```{r echo=FALSE, fig.align='center'}
+    # Calculate all BMC levels per height to mostrate in a plot
+    df.IMC<-data.frame(
+        height=c(20:200),
+        bmc1=18.5 * ((c(20:200)/100)^2),
+        bmc2=25 * ((c(20:200)/100)^2),
+        bmc3=30 * ((c(20:200)/100)^2),
+        bmc4=35 * ((c(20:200)/100)^2),
+        bmc5=40 * ((c(20:200)/100)^2),
+        bmc6=50 * ((c(20:200)/100)^2)
+    );
+
+    # Assign the colors to mostrate in the plot the several BMC levels
+    colours<-c("blue","black","orange", "red", "brown", "purple");
+
+    # Assign the colors to mostrate in the plot the several BMC levels
+    msgLegend<-c("Underweight", "Normal weight",
+         "Overweight", "Obese type I","Obese type II",
+         "Obese type III");
+
+    plot(df.IMC$bmc1, df.IMC$height,
+       type="l",
+       col=colours[1],
+       main="BMC LEVELS",
+       ylab="Height (Cm.)",
+       xlab="Weight (kgrs.)",
+       ylim=c(20,200),
+       xlim=c(0,125)
+    );
+
+    lines(df.IMC$bmc2, df.IMC$height, col=colours[2]);
+    lines(df.IMC$bmc3, df.IMC$height, col=colours[3]);
+    lines(df.IMC$bmc4, df.IMC$height, col=colours[4]);
+    lines(df.IMC$bmc5, df.IMC$height, col=colours[5]);
+    lines(df.IMC$bmc6, df.IMC$height, col=colours[6]);
+    points(73, 172, col=colours[2], pch=25);
+    legend('topleft', msgLegend, lty=c(1) , col=colours, bty='n', cex=.75)
+```
 
 
 BMC Calculator 
