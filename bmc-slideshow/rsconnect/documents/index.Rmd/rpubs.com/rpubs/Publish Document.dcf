@@ -1,0 +1,7 @@
+name: Publish Document
+account: rpubs
+server: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/214222/4255449a94c44a52b0a185bc05a6bd28
+bundleId: https://api.rpubs.com/api/v1/document/214222/4255449a94c44a52b0a185bc05a6bd28
+url: http://rpubs.com/lanthano/214222
+when: 1475332406.35043

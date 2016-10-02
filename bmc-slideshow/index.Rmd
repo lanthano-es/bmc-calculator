@@ -1,0 +1,144 @@
+---
+title       : BMC - Calculator
+subtitle    : User Manual
+author      : Francisco González Alonso
+job         : Computer engineer
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : [mathjax]     # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+runtime     : shiny
+---
+# BMI description and use
+
+## What is the BMI- Body Mass Index?
+
+The body mass index (BMI) or Quetelet index is a value derived from the mass (weight) and height of an individual. 
+
+The BMI is defined as the body mass divided by the square of the body height, and is universally expressed in units of kg/m2, resulting from mass in kilograms and height in metres.
+
+
+The BMI is an attempt to quantify the amount of tissue mass (muscle, fat, and bone) in an individual, and then categorize that person as underweight, normal weight, overweight, or obese based on that value. 
+
+[Body mass index - WIKIPEDIA]("https://en.wikipedia.org/wiki/Body_mass_index")
+
+--- .class #id 
+## How I can calculate the BMI?
+
+Calculate this index is very easy, just you have to know your height and weight, through the equation: 
+**$$BMI= \frac{mass_{kg}}{height_m^{2}} = {703}\times{\frac{mass_{lb}}{height_{in}^{2}}}$$**
+
+And compare your BMI with the different ranges of BMI:
+
+| Category BMI(kg/m2)                   	|  From 	|    To 	|
+|---------------------------------------	|------:	|------:	|
+| Very severely underweight             	|       	| >15.0 	|
+| Severely underweight                  	|  15.0 	|  16.0 	|
+| Underweight                           	|  16.0 	|  18.5 	|
+| Normal (healthy weight)               	|  18.5 	|  25.0 	|
+| Overweight                            	|  25.0 	|  30.0 	|
+| Obese Class I (Moderately obese)      	|  30.0 	|  35.0 	|
+| Obese Class II (Severely obese)       	|  35.0 	|  40.0 	|
+| Obese Class III (Very severely obese) 	| >40.0 	|       	| 	
+
+
+--- .class #id 
+## Example
+
+For a person with 73 kg weight and 1.72 meters tall, his BMI is:
+`r BMI<- (73/(1.72^2))`
+**$$BMI= \frac{mass_{kg}}{height_m^{2}}= \frac{73_{kg}}{1.72m^{2}}=`r BMI`$$**
+
+
+```{r echo=FALSE}
+    msg<- "";
+    imc<-BMI;
+    if(imc<18.5) msg<-paste0(msg, "underweight");
+    if(imc>=18.5&&imc<25) msg<-paste0(msg, "normal weight");
+    if(imc>=25&&imc<30) msg<-paste0(msg, "overweight");
+    if(imc>=30&&imc<35) msg<-paste0(msg, "obese type I");
+    if(imc>=35&&imc<40) msg<-paste0(msg, "obese type II");
+    if(imc>=40) msg<-paste0(msg, "obese type III");
+```
+
+And It correspond with a `r msg` class.
+
+<!-- Limit image width and height -->
+<style type='text/css'>
+img {
+    max-height: 400px;
+    max-width: 650px;
+}
+</style>
+
+
+```{r echo=FALSE, fig.align='center'}
+    # Calculate all BMC levels per height to mostrate in a plot
+    df.IMC<-data.frame(
+        height=c(20:200),
+        bmc1=18.5 * ((c(20:200)/100)^2),
+        bmc2=25 * ((c(20:200)/100)^2),
+        bmc3=30 * ((c(20:200)/100)^2),
+        bmc4=35 * ((c(20:200)/100)^2),
+        bmc5=40 * ((c(20:200)/100)^2),
+        bmc6=50 * ((c(20:200)/100)^2)
+    );
+
+    # Assign the colors to mostrate in the plot the several BMC levels
+    colours<-c("blue","black","orange", "red", "brown", "purple");
+
+    # Assign the colors to mostrate in the plot the several BMC levels
+    msgLegend<-c("Underweight", "Normal weight",
+         "Overweight", "Obese type I","Obese type II",
+         "Obese type III");
+
+    plot(df.IMC$bmc1, df.IMC$height,
+       type="l",
+       col=colours[1],
+       main="BMC LEVELS",
+       ylab="Height (Cm.)",
+       xlab="Weight (kgrs.)",
+       ylim=c(20,200),
+       xlim=c(0,125)
+    );
+
+    lines(df.IMC$bmc2, df.IMC$height, col=colours[2]);
+    lines(df.IMC$bmc3, df.IMC$height, col=colours[3]);
+    lines(df.IMC$bmc4, df.IMC$height, col=colours[4]);
+    lines(df.IMC$bmc5, df.IMC$height, col=colours[5]);
+    lines(df.IMC$bmc6, df.IMC$height, col=colours[6]);
+    points(73, 172, col=colours[2], pch=25);
+    legend('topleft', msgLegend, lty=c(1) , col=colours, bty='n', cex=.75)
+```
+
+--- .class #id 
+# BMC Calculator User Instructions
+
+You can run my App from several forms:
+
+* Run it in Shinyapps: [bmc-calculator]("https://lanthano.shinyapps.io/bmc-calculator/")
+
+* Run it Local: for it you must:
+    + Download the server.R and ui.R from my repository in Github and copy them 
+    in the same directory.
+    
+    + Load Both in RStudio.
+    
+    + Install shiny library and run it with the follow code:
+    
+    ~~~~
+    install.packages("shiny");
+    library(shiny);
+    runApp();
+    ~~~~
+
+[For more information] ("http://shiny.rstudio.com/tutorial/lesson7/")
+
+* To calculate Your BMI you must enter your name (optional), weight and height, and then click on the Calculate button.
+
+
+
+
+
